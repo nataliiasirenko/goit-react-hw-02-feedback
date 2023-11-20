@@ -13,6 +13,7 @@ export class App extends Component {
   }
 
 
+
   leaveFeedbackOption =(option) => { 
     this.setState((prevState) => {
     return {
@@ -24,11 +25,27 @@ export class App extends Component {
   const {good, neutral, bad} = this.state
    return good + neutral + bad;
  }
-  
+
+
+ positive = () => {
+  const {good, neutral} = this.state
+  return good + neutral
+}
+
+  countPositiveFeedbackPercentage = ()=> {
+    const total = this.countTotalFeedback();
+   
+    const value = this.positive()
+    const result = ((value / total) * 100).toFixed(0);
+    return Number(result);
+  }
+
+
+
   render() {
     const { good, neutral, bad } = this.state;
     const totalFeedback = this.countTotalFeedback();
-
+    const positivePercentage = this.countPositiveFeedbackPercentage('good');
     return (
       <>   <Section title="Please leave feedback">
       <FeedbackOptions
@@ -43,7 +60,7 @@ export class App extends Component {
         neutral={neutral}
         bad={bad}
         total={totalFeedback}
-       
+        positiveFeedback = {positivePercentage}
       />
     ) : 
       (< Notification title = "There is no feedback yet" />)
